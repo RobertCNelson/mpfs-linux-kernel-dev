@@ -1,0 +1,24 @@
+From f2172fce6acaffca8bfcb98767600098ce8658a9 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 24 Aug 2021 14:21:02 +0100
+Subject: [PATCH 68/93] qspi: update mscc compat strings
+
+---
+ drivers/spi/spi-microsemi-qspi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-microsemi-qspi.c b/drivers/spi/spi-microsemi-qspi.c
+index bc4b665eb25f..e7f979fc15da 100755
+--- a/drivers/spi/spi-microsemi-qspi.c
++++ b/drivers/spi/spi-microsemi-qspi.c
+@@ -680,6 +680,7 @@ static int mss_spi_remove(struct platform_device *pdev)
+ #if defined(CONFIG_OF)
+ static const struct of_device_id mss_spi_dt_ids[] = {
+ 	{ .compatible = "microsemi,ms-pf-mss-qspi" },
++	{ .compatible = "microchip,mpfs-qspi" },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, mss_spi_dt_ids);
+-- 
+2.30.2
+

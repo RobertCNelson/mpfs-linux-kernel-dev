@@ -1,0 +1,73 @@
+From 2b6c5f8d9c2ba38bba62c410857e44e0c6eb1948 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Thu, 29 Jul 2021 11:47:14 +0100
+Subject: [PATCH 27/93] riscv: icicle kit: add spi&qspi support
+
+---
+ .../boot/dts/microchip/microchip-mpfs.dtsi    | 36 +++++++++++++++++++
+ arch/riscv/configs/icicle_kit_defconfig       |  3 ++
+ 2 files changed, 39 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index d3a684114272..659c034edfe3 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -380,5 +380,41 @@ mssgpio: gpio@20122000 {
+ 			#gpio-cells = <2>;
+ 			status = "okay";
+ 		};
++		mssspi0: spi@20108000 {
++			compatible = "microsemi,ms-pf-mss-spi";
++			interrupt-parent = <&plic>;
++			interrupts = <54>;
++			reg = <0x0 0x20108000 0 0x1000>;
++			clocks = <&clkcfg CLK_SPI0>;
++			spi-max-frequency = <25000000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			num-cs = <8>;
++			status = "okay";
++		};
++		mssspi1: spi@20109000 {
++			compatible = "microsemi,ms-pf-mss-spi";
++			interrupt-parent = <&plic>;
++			interrupts = <55>;
++			reg = <0x0 0x20109000 0 0x1000>;
++			clocks = <&clkcfg CLK_SPI1>;
++			spi-max-frequency = <25000000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			num-cs = <8>;
++			status = "okay";
++		};
++		mssqspi: qspi@21000000 {
++			compatible = "microsemi,ms-pf-mss-qspi";
++			interrupt-parent = <&plic>;
++			interrupts = <85>;
++			reg = <0x20 0x21000000 0 0x1000>;
++			clocks = <&clkcfg CLK_QSPI>;
++			spi-max-frequency = <25000000>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			num-cs = <8>;
++			status = "okay";
++		};
+ 	};
+ };
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index 8d72c4ab2238..25308ec927de 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -69,6 +69,9 @@ CONFIG_HW_RANDOM=y
+ CONFIG_HW_RANDOM_VIRTIO=y
+ CONFIG_SPI=y
+ CONFIG_SPI_SIFIVE=y
++CONFIG_SPI_MICROSEMI=y
++CONFIG_SPI_MICROSEMI_QSPI=y
++CONFIG_SPI_MASTER=y
+ CONFIG_GPIOLIB=y
+ CONFIG_GPIOLIB_IRQCHIP=y
+ CONFIG_OF_GPIO=y
+-- 
+2.30.2
+

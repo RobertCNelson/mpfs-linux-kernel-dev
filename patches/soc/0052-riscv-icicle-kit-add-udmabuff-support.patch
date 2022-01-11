@@ -1,0 +1,80 @@
+From 988d36a3f56f5201f9a478eedfd0f0b671e16aa6 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Fri, 23 Jul 2021 10:56:19 +0100
+Subject: [PATCH 52/93] riscv: icicle kit: add udmabuff support
+
+---
+ .../microchip/microchip-mpfs-icicle-kit.dts   | 44 +++++++++++++++++++
+ arch/riscv/configs/icicle_kit_defconfig       |  1 +
+ 2 files changed, 45 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index 9eb917203599..da067e7b0dbf 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -77,6 +77,50 @@ pdma: pdma@3000000 {
+ 			#dma-cells = <1>;
+ 		};
+ 	};
++	reserved-memory {
++		ranges;
++		#size-cells = <2>;
++		#address-cells = <2>;
++		fabricbuf0: fabricbuf@0 {
++			compatible = "shared-dma-pool";
++			reg = <0x00 0xae000000 0x0 0x02000000>;
++			label = "fabricbuf0-ddr-c";
++		};
++		fabricbuf1: fabricbuf@1 {
++			compatible = "shared-dma-pool";
++			reg = <0x00 0xc0000000 0x0 0x08000000>;
++			label = "fabricbuf1-ddr-nc";
++		};
++		fabricbuf2: fabricbuf@2 {
++			compatible = "shared-dma-pool";
++			reg = <0x00 0xd8000000 0x0 0x08000000>;
++			label = "fabricbuf2-ddr-nc-wcb";
++		};
++	};
++	udmabuf@0 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-c0";
++		minor-number = <0>;
++		size = <0x0 0x02000000>;
++		memory-region = <&fabricbuf0>;
++		sync-mode = <3>;
++	}; 
++	udmabuf@1 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-nc0";
++		minor-number = <1>;
++		size = <0x0 0x08000000>;
++		memory-region = <&fabricbuf1>;
++		sync-mode = <3>;
++	};
++	udmabuf@2 {
++		compatible = "ikwzm,u-dma-buf";
++		device-name = "udmabuf-ddr-nc-wcb0";
++		minor-number = <2>;
++		size = <0x0 0x08000000>;
++		memory-region = <&fabricbuf2>;
++		sync-mode = <3>;
++	};
+ };
+ 
+ &serial0 {
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index 949e92b87cfd..d6d683aff397 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -187,6 +187,7 @@ CONFIG_POLARFIRE_SOC_FPGA_DIGEST=y
+ CONFIG_POLARFIRE_SOC_SIGNATURE=y
+ CONFIG_POLARFIRE_SOC_FPGA_CERT=y
+ 
++CONFIG_U_DMA_BUF=y
+ CONFIG_UIO=y
+ CONFIG_UIO_PDRV_GENIRQ=y
+ CONFIG_UIO_DMEM_GENIRQ=y
+-- 
+2.30.2
+

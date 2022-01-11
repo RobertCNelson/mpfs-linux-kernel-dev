@@ -1,0 +1,37 @@
+From 262367f2a136e0361a089dc7ea840cc9b7a4b54d Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 15 Jun 2021 15:24:59 +0100
+Subject: [PATCH 28/93] riscv: icicle kit: add upper ddr range
+
+---
+ .../dts/microchip/microchip-mpfs-icicle-kit.dts     | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index 7786f2bd8e29..000a4243acc1 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -22,10 +22,17 @@ cpus {
+ 		timebase-frequency = <RTCCLK_FREQ>;
+ 	};
+ 
+-	memory@80000000 {
++	DDRC_CACHE_LO: memory@80000000 {
+ 		device_type = "memory";
+-		reg = <0x0 0x80000000 0x0 0x40000000>;
+-		clocks = <&clkcfg 26>;
++		reg = <0x0 0x80000000 0x0 0x2e000000>;
++		clocks = <&clkcfg CLK_DDRC>;
++		status = "okay";
++	};
++	DDRC_CACHE_HI: memory@1040000000 {
++		device_type = "memory";
++		reg = <0x10 0x00000000 0x0 0x40000000>;
++		clocks = <&clkcfg CLK_DDRC>;
++		status = "okay";
+ 	};
+ 
+ 	soc {
+-- 
+2.30.2
+

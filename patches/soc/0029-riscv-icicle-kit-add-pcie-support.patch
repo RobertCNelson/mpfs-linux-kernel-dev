@@ -1,0 +1,90 @@
+From 46c3013d43f86796ee8f33c086620e2220c68cc7 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Thu, 17 Jun 2021 13:39:36 +0100
+Subject: [PATCH 29/93] riscv: icicle kit: add pcie support
+
+---
+ .../boot/dts/microchip/microchip-mpfs.dtsi    | 30 +++++++++++++++++++
+ arch/riscv/configs/icicle_kit_defconfig       | 18 +++++++++--
+ 2 files changed, 45 insertions(+), 3 deletions(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index 659c034edfe3..43033f6a2805 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -325,6 +325,36 @@ emac1: ethernet@20112000 {
+ 			#size-cells = <0>;
+ 		};
+ 
++		pcie: pcie@70000000 {
++			#address-cells = <0x3>;
++			#interrupt-cells = <0x1>;
++			#size-cells = <0x2>;
++			compatible = "microchip,pcie-host-1.0";
++			device_type = "pci";
++			clocks = <&clkcfg CLK_FIC0>, <&clkcfg CLK_FIC1>, <&clkcfg CLK_FIC3>;
++			clock-names = "fic0", "fic1", "fic3";
++			bus-range = <0x00 0x7f>;
++			interrupt-map = <0 0 0 1 &pcie_intc 0>,
++					<0 0 0 2 &pcie_intc 1>,
++					<0 0 0 3 &pcie_intc 2>,
++					<0 0 0 4 &pcie_intc 3>;
++			interrupt-map-mask = <0 0 0 7>;
++			interrupt-parent = <&plic>;
++			interrupts = <119>;
++			ranges = <0x03000000 0x0 0x78000000 0x0 0x78000000 0x0 0x04000000>;
++			reg = <0x0 0x70000000 0x0 0x08000000 0x0 0x43000000 0x0 0x00010000>;
++			dma-ranges = <0x02000000 0x0 0x00000000 0x0 0x00000000 0x1 0x00000000>;
++			reg-names = "cfg", "apb";
++			msi-parent = <&pcie>;
++			msi-controller;
++			status = "okay";
++			pcie_intc: interrupt-controller {
++				#address-cells = <0>;
++				#interrupt-cells = <1>;
++				interrupt-controller;
++			};
++		};
++
+ 		mbox: mailbox@37020000 {
+ 			compatible = "microchip,polarfire-soc-mailbox";
+ 			reg = <0x0 0x37020000 0x0 0x1000>, <0x0 0x2000318C 0x0 0x40>;
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index 25308ec927de..43fa42b12399 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -38,10 +38,19 @@ CONFIG_IP_PNP_RARP=y
+ CONFIG_NETLINK_DIAG=y
+ CONFIG_NET_9P=y
+ CONFIG_NET_9P_VIRTIO=y
++
+ CONFIG_PCI=y
+-CONFIG_PCIEPORTBUS=y
++CONFIG_PCI_DEBUG=y
++CONFIG_PCI_DOMAINS=y
++CONFIG_PCI_DOMAINS_GENERIC=y
++CONFIG_PCI_ECAM=y
++CONFIG_PCI_HOST_COMMON=y
+ CONFIG_PCI_HOST_GENERIC=y
+-CONFIG_PCIE_XILINX=y
++CONFIG_PCI_MSI=y
++CONFIG_PCI_MSI_IRQ_DOMAIN=y
++CONFIG_PCI_QUIRKS=y
++CONFIG_PCIE_MICROCHIP_HOST=y
++
+ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
+ CONFIG_BLK_DEV_LOOP=y
+@@ -154,4 +163,7 @@ CONFIG_POLARFIRE_SOC_MAILBOX=y
+ CONFIG_POLARFIRE_SOC_SYS_CTRL=y
+ CONFIG_HW_RANDOM_POLARFIRE_SOC=y
+ CONFIG_RTC_DRV_MPFS=y
+-CONFIG_I2C_MICROCHIP=y
+\ No newline at end of file
++CONFIG_I2C_MICROCHIP=y
++
++CONFIG_BLK_DEV_ZONED=y
++CONFIG_BLK_DEV_NVME=y
+-- 
+2.30.2
+

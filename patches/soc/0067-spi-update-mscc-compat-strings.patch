@@ -1,0 +1,24 @@
+From 2e1cd18fba22aa5421b300de49f87774749073df Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 24 Aug 2021 14:20:43 +0100
+Subject: [PATCH 67/93] spi: update mscc compat strings
+
+---
+ drivers/spi/spi-microsemi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-microsemi.c b/drivers/spi/spi-microsemi.c
+index 5ddc1f134cf6..493793a6ac24 100644
+--- a/drivers/spi/spi-microsemi.c
++++ b/drivers/spi/spi-microsemi.c
+@@ -812,6 +812,7 @@ static int mss_spi_remove(struct platform_device *pdev)
+ #if defined(CONFIG_OF)
+ static const struct of_device_id mss_spi_dt_ids[] = {
+ 	{ .compatible = "microsemi,ms-pf-mss-spi" },
++	{ .compatible = "microchip,mpfs-spi" },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, mss_spi_dt_ids);
+-- 
+2.30.2
+

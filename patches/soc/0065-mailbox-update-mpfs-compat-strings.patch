@@ -1,0 +1,30 @@
+From 4782699c132105b5a5ad954e3ecc55c46a67546d Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 24 Aug 2021 14:19:45 +0100
+Subject: [PATCH 65/93] mailbox: update mpfs compat strings
+
+---
+ drivers/mailbox/mailbox-mpfs.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mailbox/mailbox-mpfs.c b/drivers/mailbox/mailbox-mpfs.c
+index 854338a40e8f..0304002237f3 100644
+--- a/drivers/mailbox/mailbox-mpfs.c
++++ b/drivers/mailbox/mailbox-mpfs.c
+@@ -232,7 +232,12 @@ static int mpfs_mbox_probe(struct platform_device *pdev)
+ }
+ 
+ static const struct of_device_id mpfs_mbox_of_match[] = {
+-	{.compatible = "microchip,polarfire-soc-mailbox", },
++	{
++		.compatible = "microchip,polarfire-soc-mailbox",
++	},
++	{
++		.compatible = "microchip,mpfs-mailbox",
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_mbox_of_match);
+-- 
+2.30.2
+

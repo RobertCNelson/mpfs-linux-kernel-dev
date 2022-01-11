@@ -1,0 +1,39 @@
+From 5ca1c1187141391e3de48e131187f72627b7828e Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 3 Aug 2021 11:48:40 +0100
+Subject: [PATCH 55/93] riscv: icicle kit: fix lsram allocation
+
+---
+ .../boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts  | 2 +-
+ arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
+index 2a7895d7d447..685d85543ca3 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
+@@ -467,7 +467,7 @@ mssqspi: qspi@21000000 {
+ 		};
+ 		fpgalsram: fpga_lsram@0x61000000 {
+ 			compatible = "generic-uio";
+-			reg = < 0x0 0x61000000 0x0 0x00010000
++			reg = < 0x0 0x61000000 0x0 0x0001000
+ 					0x14 0x00000000 0x0 0x00010000 >;
+ 			status = "okay";
+ 		};
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index 8fb02bd07f84..7555f6ccfc6d 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -54,7 +54,7 @@ corePWM0: corePWM@41000000 {
+ 		
+ 		fpgalsram: fpga_lsram@0x61000000 {
+ 			compatible = "generic-uio";
+-			reg = < 0x0 0x61000000 0x0 0x00010000
++			reg = < 0x0 0x61000000 0x0 0x0001000
+ 					0x14 0x00000000 0x0 0x00010000 >;
+ 			status = "okay";
+ 		};
+-- 
+2.30.2
+

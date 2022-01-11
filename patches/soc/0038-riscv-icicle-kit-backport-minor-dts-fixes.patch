@@ -1,0 +1,35 @@
+From e837a45013b9737b6948c4695572ec3f6e5181d0 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Mon, 12 Jul 2021 12:17:10 +0100
+Subject: [PATCH 38/93] riscv: icicle kit: backport minor dts fixes
+
+---
+ arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index b060cabdac79..e38fcce887a7 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -11,6 +11,9 @@ / {
+ 
+ 	chosen {
+ 	};
++	aliases {
++		ethernet0 = &emac1;
++	};
+ 
+ 	cpus {
+ 		#address-cells = <1>;
+@@ -317,7 +320,7 @@ emac1: ethernet@20112000 {
+ 			reg = <0x0 0x20112000 0x0 0x2000>;
+ 			interrupt-parent = <&plic>;
+ 			interrupts = <70 71 72 73>;
+-			mac-address = [00 00 00 00 00 00];
++			local-mac-address = [00 00 00 00 00 00];
+ 			clocks = <&clkcfg CLK_MAC1>, <&clkcfg CLK_AHB>;
+ 			status = "disabled";
+ 			clock-names = "pclk", "hclk";
+-- 
+2.30.2
+

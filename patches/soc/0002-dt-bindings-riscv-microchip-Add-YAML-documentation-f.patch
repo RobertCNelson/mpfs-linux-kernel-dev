@@ -1,0 +1,55 @@
+From 5163947a4cf096d8a2fba76c0bec115b3dcf5fc3 Mon Sep 17 00:00:00 2001
+From: Atish Patra <atish.patra@wdc.com>
+Date: Wed, 3 Mar 2021 12:02:50 -0800
+Subject: [PATCH 02/93] dt-bindings: riscv: microchip: Add YAML documentation
+ for the PolarFire SoC
+
+Add YAML DT binding documentation for the Microchip PolarFire SoC.
+It is documented at:
+
+https://www.microsemi.com/products/fpga-soc/polarfire-soc-icicle-quick-start-guide
+
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
+---
+ .../devicetree/bindings/riscv/microchip.yaml  | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/riscv/microchip.yaml
+
+diff --git a/Documentation/devicetree/bindings/riscv/microchip.yaml b/Documentation/devicetree/bindings/riscv/microchip.yaml
+new file mode 100644
+index 000000000000..3f981e897126
+--- /dev/null
++++ b/Documentation/devicetree/bindings/riscv/microchip.yaml
+@@ -0,0 +1,27 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/riscv/microchip.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Microchip PolarFire SoC-based boards device tree bindings
++
++maintainers:
++  - Cyril Jean <Cyril.Jean@microchip.com>
++  - Lewis Hanly <lewis.hanly@microchip.com>
++
++description:
++  Microchip PolarFire SoC-based boards
++
++properties:
++  $nodename:
++    const: '/'
++  compatible:
++    items:
++      - enum:
++          - microchip,mpfs-icicle-kit
++      - const: microchip,mpfs
++
++additionalProperties: true
++
++...
+-- 
+2.30.2
+

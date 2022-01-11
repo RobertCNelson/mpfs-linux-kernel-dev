@@ -1,0 +1,36 @@
+From b9924387c2f3078fd8602dd2b8c79e7fdbe79e5b Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Mon, 21 Dec 2020 14:01:37 +0000
+Subject: [PATCH 12/93] MAINTAINERS: add entry for polarfire soc mailbox
+
+Add Cyril Jean and Lewis Hanly as maintainers for the Microchip SoC
+directory and the system services mailbox driver
+
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9450e052f1b1..75d75a453b5a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15371,6 +15371,15 @@ F:	arch/riscv/
+ N:	riscv
+ K:	riscv
+ 
++RISC-V/MICROCHIP POLARFIRE SOC SUPPORT
++M:	Lewis Hanly <lewis.hanly@microchip.com>
++M:	Cyril Jean <cyril.jean@microchip.com>
++L:	linux-riscv@lists.infradead.org
++S:	Supported
++F:	drivers/mailbox/mailbox-mpfs.c
++F:	drivers/soc/microchip/
++F:	include/soc/microchip/mpfs.h
++
+ RNBD BLOCK DRIVERS
+ M:	Danil Kipnis <danil.kipnis@cloud.ionos.com>
+ M:	Jack Wang <jinpu.wang@cloud.ionos.com>
+-- 
+2.30.2
+

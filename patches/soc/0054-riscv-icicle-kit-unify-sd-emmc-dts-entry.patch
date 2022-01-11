@@ -1,0 +1,78 @@
+From f2edf5c68014e8ce67c818fcb23c39a599c8726d Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 3 Aug 2021 13:37:57 +0100
+Subject: [PATCH 54/93] riscv: icicle kit: unify sd/emmc dts entry
+
+---
+ .../microchip/microchip-mpfs-icicle-kit.dts   |  2 +-
+ .../boot/dts/microchip/microchip-mpfs.dtsi    | 31 +++----------------
+ 2 files changed, 5 insertions(+), 28 deletions(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index da067e7b0dbf..8fb02bd07f84 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -139,7 +139,7 @@ &serial3 {
+ 	status = "okay";
+ };
+ 
+-&sdcard {
++&emmc {
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index fb382835b845..a64dbdeb7da5 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -264,8 +264,7 @@ serial3: serial@20104000 {
+ 			clocks = <&clkcfg CLK_MMUART3>;
+ 			status = "disabled";
+ 		};
+-
+-		emmc: mmc@20008000 {
++		emmc: mmc@20008000 { /* Common node entry for emmc/sd */
+ 			compatible = "cdns,sd4hc";
+ 			reg = <0x0 0x20008000 0x0 0x1000>;
+ 			interrupt-parent = <&plic>;
+@@ -274,34 +273,12 @@ emmc: mmc@20008000 {
+ 			clocks = <&clkcfg CLK_MMC>;
+ 			bus-width = <4>;
+ 			cap-mmc-highspeed;
+-			mmc-ddr-3_3v;
+-			max-frequency = <200000000>;
+-			non-removable;
+-			no-sd;
+-			no-sdio;
+-			voltage-ranges = <3300 3300>;
+-			status = "disabled";
+-		};
+-
+-		sdcard: sdhc@20008000 {
+-			compatible = "cdns,sd4hc";
+-			reg = <0x0 0x20008000 0x0 0x1000>;
+-			interrupt-parent = <&plic>;
+-			interrupts = <88>;
+-			pinctrl-names = "default";
+-			clocks = <&clkcfg CLK_MMC>;
+-			bus-width = <4>;
+-			disable-wp;
+ 			cap-sd-highspeed;
+-			card-detect-delay = <200>;
+-			sd-uhs-sdr12;
+-			sd-uhs-sdr25;
+-			sd-uhs-sdr50;
+-			sd-uhs-sdr104;
++			no-1-8-v;
++			disable-wp;
+ 			max-frequency = <200000000>;
+-			status = "disabled";
++			status = "okay";
+ 		};
+-
+ 		emac0: ethernet@20110000 {
+ 			compatible = "cdns,macb";
+ 			reg = <0x0 0x20110000 0x0 0x2000>;
+-- 
+2.30.2
+

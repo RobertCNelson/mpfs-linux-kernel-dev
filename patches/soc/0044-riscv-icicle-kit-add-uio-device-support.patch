@@ -1,0 +1,97 @@
+From 2e4c5e01d452bdc105167dd108fa1c0acfc65ecb Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Fri, 23 Jul 2021 10:43:29 +0100
+Subject: [PATCH 44/93] riscv: icicle kit: add uio device support
+
+---
+ .../microchip/microchip-mpfs-icicle-kit.dts   | 25 +++++++++++++++++++
+ .../boot/dts/microchip/microchip-mpfs.dtsi    | 20 +++++++++++++++
+ arch/riscv/configs/icicle_kit_defconfig       |  7 ++++++
+ 3 files changed, 52 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index 0764e832f26f..9eb917203599 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -51,6 +51,31 @@ corePWM0: corePWM@41000000 {
+ 			clock-names = "fic3";
+ 			reg = <0x0 0x41000000 0x0 0xF0>;
+ 		};
++		
++		fpgalsram: fpga_lsram@0x61000000 {
++			compatible = "generic-uio";
++			reg = < 0x0 0x61000000 0x0 0x00010000
++					0x14 0x00000000 0x0 0x00010000 >;
++			status = "okay";
++		};
++
++		dma: dma@0x60020000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "microchip,mpfs-fpga-dma-uio";
++			reg = <0x00 0x60020000 0x0 0x1000>;
++			interrupt-parent = <&plic>;
++			interrupts = <120>;
++			status = "okay";
++		};
++
++		pdma: pdma@3000000 {
++			compatible = "microchip,mpfs-pdma-uio";
++			reg = <0x0 0x3000000 0x0 0x8000>;
++			interrupt-parent = <&plic>;
++			interrupts = <5 6 7 8 9 10 11 12>;
++			#dma-cells = <1>;
++		};
+ 	};
+ };
+ 
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index 4768d0fda2cb..ba484ef75906 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -474,6 +474,26 @@ mssqspi: qspi@21000000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			num-cs = <8>;
++		};
++		mssusb: usb@20201000 {
++			compatible = "microchip,mpfs-usb-host";
++			reg = <0x0 0x20201000 0x00000000 0x00001000>;
++			reg-names = "mc","control";
++			clocks = <&clkcfg CLK_USB>;
++			interrupt-parent = <&plic>;
++			interrupts = <87 86>;
++			interrupt-names = "mc","dma";
++			dr_mode = "host";
++			status = "okay";
++		};
++		msscan: can@2010c000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "microchip,mpfs-can-uio";
++			reg = <0x0 0x2010c000 0x0 0x1000>;
++			interrupt-parent = <&plic>;
++			interrupts = <56>;
++			clocks = <&clkcfg CLK_CAN0>;
+ 			status = "okay";
+ 		};
+ 	};
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index 21df6fba4450..8355dc2e2d44 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -175,3 +175,10 @@ CONFIG_POLARFIRE_SOC_SERIAL_NUMBER=y
+ CONFIG_POLARFIRE_SOC_FPGA_DIGEST=y
+ CONFIG_POLARFIRE_SOC_SIGNATURE=y
+ CONFIG_POLARFIRE_SOC_FPGA_CERT=y
++
++CONFIG_UIO=y
++CONFIG_UIO_PDRV_GENIRQ=y
++CONFIG_UIO_DMEM_GENIRQ=y
++CONFIG_UIO_MICROCHIP_CAN=y
++CONFIG_UIO_MICROCHIP_PDMA=y
++CONFIG_UIO_MICROSEMI_DMA=y
+\ No newline at end of file
+-- 
+2.30.2
+

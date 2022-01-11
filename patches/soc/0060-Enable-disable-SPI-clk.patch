@@ -1,0 +1,58 @@
+From 13c5a5e1e3490dd3eb6ebcc734680a52d7961321 Mon Sep 17 00:00:00 2001
+From: Daire McNamara <daire.mcnamara@microchip.com>
+Date: Tue, 24 Aug 2021 12:37:28 +0100
+Subject: [PATCH 60/93] Enable/disable SPI clk
+
+---
+ drivers/spi/spi-microsemi.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-microsemi.c b/drivers/spi/spi-microsemi.c
+index 49140186989c..5ddc1f134cf6 100644
+--- a/drivers/spi/spi-microsemi.c
++++ b/drivers/spi/spi-microsemi.c
+@@ -457,9 +457,9 @@ static irqreturn_t mss_spi_interrupt(int irq, void *dev_id)
+ 	if (intfield & MSS_SPI_INT_TXDONE) {
+ 		mss_spi_wr(s, MSS_SPI_REG_INT_CLEAR,
+ 			MSS_SPI_INT_TXDONE);
+-	/* check if we have data to read */
+-	if (s->rx_len)
+-		mss_spi_rd_fifo(s);
++		/* check if we have data to read */
++		if (s->rx_len)
++			mss_spi_rd_fifo(s);
+ 		/* check if we have data to write */
+ 		if (s->tx_len)
+ 			mss_spi_wr_fifo(s);
+@@ -716,7 +716,13 @@ static int mss_spi_probe(struct platform_device *pdev)
+ 	if ((!s->clk) || (IS_ERR(s->clk))) {
+ 		err = PTR_ERR(s->clk);
+ 		dev_err(&pdev->dev, "could not get clk: %d\n", err);
+-	goto error_release_regs;
++		goto error_release_regs;
++	}
++
++	err = clk_prepare_enable(s->clk);
++	if (err) {
++		dev_err(&pdev->dev, "failed to enable clock\n");
++		return err;
+ 	}
+ 
+ 	/* get master's max spi clock rate  from DT */
+@@ -781,11 +787,13 @@ static int mss_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master  = platform_get_drvdata(pdev);
+ 	struct mss_spi_dsc *s = spi_master_get_devdata(master);
+ 
++	mss_spi_disable_ints(s);
+ 	/* release kernel resources */
+ 	spi_unregister_master(master);
+ 	free_irq(s->irq, s);
+ 	iounmap(s->regs);
+ 	spi_master_put(master);
++	clk_disable_unprepare(s->clk);
+ 	platform_set_drvdata(pdev, NULL);
+ 
+ 	/* shut the hardware down */
+-- 
+2.30.2
+

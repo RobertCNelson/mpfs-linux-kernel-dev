@@ -1,0 +1,33 @@
+From 511809d23570e0619667c5a8fe127759f94477be Mon Sep 17 00:00:00 2001
+From: Lewis Hanly <lewis.hanly@microchip.com>
+Date: Fri, 18 Jun 2021 13:51:19 +0100
+Subject: [PATCH 31/93] riscv: hifive unleashed: add pci device tree entry
+
+Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
+---
+ arch/riscv/boot/dts/sifive/fu540-c000.dtsi | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/boot/dts/sifive/fu540-c000.dtsi b/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
+index 4db800790c98..3c2d447b5a63 100644
+--- a/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
++++ b/arch/riscv/boot/dts/sifive/fu540-c000.dtsi
+@@ -294,10 +294,14 @@ pcie: pcie@2030000000 {
+ 					<0 0 0 4 &pcie_intc 3>;
+ 			interrupt-map-mask = <0 0 0 7>;
+ 			interrupt-parent = <&plic0>;
+-			#interrupt-cells = <1>;
++			interrupt = <32>;
+                         ranges = <0x3000000 0x0 0x40000000 0x0 0x40000000 0x0 0x20000000>;
+                         reg = <0x20 0x30000000 0x0 0x4000000 0x20 0x0 0x0 0x100000>;
++                        dma-ranges = <0x02000000 0 0 0 0 1 0>;
+                         reg-names = "control", "apb";
++                        msi-parent  = <&pcie>;
++                        msi-controller;
++                        status = "okay";
+ 			 pcie_intc: interrupt-controller {
+ 				#address-cells = <0>;
+ 				#interrupt-cells = <1>;
+-- 
+2.30.2
+

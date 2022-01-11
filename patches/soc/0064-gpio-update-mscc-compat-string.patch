@@ -1,0 +1,26 @@
+From c9668c3ce217db30f099f8fc9b7bdc677b184f64 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 24 Aug 2021 14:19:19 +0100
+Subject: [PATCH 64/93] gpio: update mscc compat string
+
+---
+ drivers/gpio/gpio-microsemi.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/gpio/gpio-microsemi.c b/drivers/gpio/gpio-microsemi.c
+index dc80d96fe15c..1024ee69477f 100644
+--- a/drivers/gpio/gpio-microsemi.c
++++ b/drivers/gpio/gpio-microsemi.c
+@@ -509,6 +509,9 @@ static const struct of_device_id microsemi_mss_gpio_match[] = {
+ 	{
+ 		.compatible = "microsemi,ms-pf-mss-gpio",
+ 	},
++	{
++		.compatible = "microchip,mpfs-gpio",
++	},
+ 	{},
+ };
+ 
+-- 
+2.30.2
+

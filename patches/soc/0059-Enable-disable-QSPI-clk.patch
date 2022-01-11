@@ -1,0 +1,37 @@
+From bb450f7332e50295a4c628c5ff0c7e00f5bcd479 Mon Sep 17 00:00:00 2001
+From: Daire McNamara <daire.mcnamara@microchip.com>
+Date: Tue, 24 Aug 2021 12:35:14 +0100
+Subject: [PATCH 59/93] Enable/disable QSPI clk
+
+---
+ drivers/spi/spi-microsemi-qspi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/spi/spi-microsemi-qspi.c b/drivers/spi/spi-microsemi-qspi.c
+index 1680a8e483f7..bc4b665eb25f 100755
+--- a/drivers/spi/spi-microsemi-qspi.c
++++ b/drivers/spi/spi-microsemi-qspi.c
+@@ -588,6 +588,12 @@ static int mss_spi_probe(struct platform_device *pdev)
+ 		goto error_release_regs;
+ 	}
+ 
++	err = clk_prepare_enable(s->clk);
++	if (err) {
++		dev_err(&pdev->dev, "failed to enable clock\n");
++		goto error_release_regs;
++	}
++
+ 	/* get master's max spi clock rate  from DT */
+ 	err = of_property_read_u32(pdev->dev.of_node,
+ 		"spi-max-frequency",
+@@ -655,6 +661,7 @@ static int mss_spi_remove(struct platform_device *pdev)
+ 	free_irq(s->irq, s);
+ 	iounmap(s->regs);
+ 	spi_master_put(master);
++	clk_disable_unprepare(s->clk);
+ 	platform_set_drvdata(pdev, NULL);
+ 
+ 	/* shut the hardware down */
+-- 
+2.30.2
+

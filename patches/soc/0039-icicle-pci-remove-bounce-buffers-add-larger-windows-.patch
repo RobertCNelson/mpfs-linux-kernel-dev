@@ -1,0 +1,42 @@
+From 7aaa2b973fbf88b1d02041d81b9eaa86e2842c06 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Wed, 14 Jul 2021 11:06:42 +0100
+Subject: [PATCH 39/93] icicle: pci: remove bounce buffers, add larger windows
+ to dts
+
+---
+ arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index e38fcce887a7..4768d0fda2cb 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -328,7 +328,7 @@ emac1: ethernet@20112000 {
+ 			#size-cells = <0>;
+ 		};
+ 
+-		pcie: pcie@70000000 {
++		pcie: pcie@43000000 {
+ 			#address-cells = <0x3>;
+ 			#interrupt-cells = <0x1>;
+ 			#size-cells = <0x2>;
+@@ -344,12 +344,12 @@ pcie: pcie@70000000 {
+ 			interrupt-map-mask = <0 0 0 7>;
+ 			interrupt-parent = <&plic>;
+ 			interrupts = <119>;
+-			ranges = <0x03000000 0x0 0x78000000 0x0 0x78000000 0x0 0x04000000>;
+-			reg = <0x0 0x70000000 0x0 0x08000000 0x0 0x43000000 0x0 0x00010000>;
+-			dma-ranges = <0x02000000 0x0 0x00000000 0x0 0x00000000 0x1 0x00000000>;
++			ranges = <0x03000000 0x0 0x08000000 0x20 0x08000000 0x0 0x80000000>;
++			reg = <0x20 0x00000000 0x0 0x08000000 0x0 0x43000000 0x0 0x00010000>;
+ 			reg-names = "cfg", "apb";
+ 			msi-parent = <&pcie>;
+ 			msi-controller;
++			mchp,axi-m-atr0 = <0x10 0>;
+ 			status = "okay";
+ 			pcie_intc: interrupt-controller {
+ 				#address-cells = <0>;
+-- 
+2.30.2
+

@@ -1,0 +1,43 @@
+From 10af39301dae5c29fd57cbb227bb6d526c55d527 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Fri, 18 Jun 2021 16:49:19 +0100
+Subject: [PATCH 33/93] riscv: icicle kit: add support for soft ip corePWM
+
+---
+ .../boot/dts/microchip/microchip-mpfs-icicle-kit.dts      | 8 ++++++++
+ arch/riscv/configs/icicle_kit_defconfig                   | 3 +++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index 000a4243acc1..9cbc699527c2 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -36,6 +36,14 @@ DDRC_CACHE_HI: memory@1040000000 {
+ 	};
+ 
+ 	soc {
++		corePWM0: corePWM@41000000 {
++			compatible = "microchip,corepwm";
++			mchp,mapped-outputs = /bits/ 16 <0xFFFF>;
++			sync-update = <1>;
++			clocks = <&clkcfg CLK_FIC3>;
++			clock-names = "fic3";
++			reg = <0x0 0x41000000 0x0 0xF0>;
++		};
+ 	};
+ };
+ 
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index 43fa42b12399..64d2813affd0 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -167,3 +167,6 @@ CONFIG_I2C_MICROCHIP=y
+ 
+ CONFIG_BLK_DEV_ZONED=y
+ CONFIG_BLK_DEV_NVME=y
++
++CONFIG_PWM=y
++CONFIG_PWM_MICROCHIP_CORE=y
+-- 
+2.30.2
+

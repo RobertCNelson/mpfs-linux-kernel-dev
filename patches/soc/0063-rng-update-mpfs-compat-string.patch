@@ -1,0 +1,26 @@
+From 7c5c12df457d0d880506ba17ce3fc24c3d9858b3 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 24 Aug 2021 14:18:40 +0100
+Subject: [PATCH 63/93] rng: update mpfs compat string
+
+---
+ drivers/char/hw_random/mpfs-rng.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/char/hw_random/mpfs-rng.c b/drivers/char/hw_random/mpfs-rng.c
+index cc6a04f310a2..501f026484ad 100644
+--- a/drivers/char/hw_random/mpfs-rng.c
++++ b/drivers/char/hw_random/mpfs-rng.c
+@@ -115,6 +115,9 @@ static const struct of_device_id mpfs_rng_number_of_match[] = {
+ 	{
+ 		.compatible = "microchip,polarfire-soc-rng",
+ 	},
++	{
++		.compatible = "microchip,mpfs-rng",
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_rng_number_of_match);
+-- 
+2.30.2
+

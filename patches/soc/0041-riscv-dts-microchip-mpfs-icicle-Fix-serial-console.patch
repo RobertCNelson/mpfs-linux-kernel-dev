@@ -1,0 +1,45 @@
+From b3c36f53635e833038bbfd014c09a0f427d136f7 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 16 Jul 2021 10:22:35 +0100
+Subject: [PATCH 41/93] riscv: dts: microchip: mpfs-icicle: Fix serial console
+
+---
+ .../boot/dts/microchip/microchip-mpfs-icicle-kit.dts     | 9 ++++++++-
+ arch/riscv/configs/icicle_kit_defconfig                  | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index 9cbc699527c2..0764e832f26f 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -14,8 +14,15 @@ / {
+ 	model = "Microchip PolarFire-SoC Icicle Kit";
+ 	compatible = "microchip,mpfs-icicle-kit";
+ 
++       aliases {
++               serial0 = &serial0;
++               serial1 = &serial1;
++               serial2 = &serial2;
++               serial3 = &serial3;
++       };
++
+ 	chosen {
+-		stdout-path = &serial0;
++		stdout-path = "serial1:115200n8";
+ 	};
+ 
+ 	cpus {
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index 6c5f52504cac..21df6fba4450 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -1,5 +1,5 @@
+ CONFIG_CMDLINE_BOOL=y
+-CONFIG_CMDLINE="earlyprintk debug console=ttyS0,115200n8 root=mmcblk0p3 uio_pdrv_genirq.of_id=generic-uio"
++CONFIG_CMDLINE="earlyprintk debug root=mmcblk0p3 uio_pdrv_genirq.of_id=generic-uio"
+ 
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+-- 
+2.30.2
+

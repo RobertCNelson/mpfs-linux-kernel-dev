@@ -1,0 +1,97 @@
+From 64125690efe0188347f308ae4d907d690ec74d47 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Fri, 10 Dec 2021 13:43:57 +0000
+Subject: [PATCH 90/93] drivers: misc: sensehat v4 backport to 5.12
+
+Backport the makefile changes for the sensehat patches
+to apply on top of 5.12.19. Also fix issues with the
+sensehat header as included in the c files so that it
+compiles correctly.
+---
+ drivers/auxdisplay/sensehat-display.c      | 2 +-
+ drivers/input/joystick/Makefile            | 1 +
+ drivers/input/joystick/sensehat-joystick.c | 2 +-
+ drivers/mfd/Kconfig                        | 2 ++
+ drivers/mfd/Makefile                       | 1 +
+ drivers/mfd/sensehat-core.c                | 2 +-
+ 6 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/auxdisplay/sensehat-display.c b/drivers/auxdisplay/sensehat-display.c
+index d1897e6a3182..f51189d07d5d 100644
+--- a/drivers/auxdisplay/sensehat-display.c
++++ b/drivers/auxdisplay/sensehat-display.c
+@@ -23,7 +23,7 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/regmap.h>
+ 
+-#include "sensehat.h"
++#include <linux/mfd/sensehat.h>
+ 
+ #define GAMMA_SIZE sizeof_field(struct sensehat_display, gamma)
+ #define VMEM_SIZE sizeof_field(struct sensehat_display, vmem)
+diff --git a/drivers/input/joystick/Makefile b/drivers/input/joystick/Makefile
+index 31d720c9e493..65895ef2f5e6 100644
+--- a/drivers/input/joystick/Makefile
++++ b/drivers/input/joystick/Makefile
+@@ -22,6 +22,7 @@ obj-$(CONFIG_JOYSTICK_GUILLEMOT)	+= guillemot.o
+ obj-$(CONFIG_JOYSTICK_IFORCE)		+= iforce/
+ obj-$(CONFIG_JOYSTICK_INTERACT)		+= interact.o
+ obj-$(CONFIG_JOYSTICK_JOYDUMP)		+= joydump.o
++obj-$(CONFIG_JOYSTICK_SENSEHAT)         += sensehat-joystick.o
+ obj-$(CONFIG_JOYSTICK_MAGELLAN)		+= magellan.o
+ obj-$(CONFIG_JOYSTICK_MAPLE)		+= maplecontrol.o
+ obj-$(CONFIG_JOYSTICK_N64)		+= n64joy.o
+diff --git a/drivers/input/joystick/sensehat-joystick.c b/drivers/input/joystick/sensehat-joystick.c
+index 7e5de0fdd036..ca7583bdb9c6 100644
+--- a/drivers/input/joystick/sensehat-joystick.c
++++ b/drivers/input/joystick/sensehat-joystick.c
+@@ -18,7 +18,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ 
+-#include "sensehat.h"
++#include <linux/mfd/sensehat.h>
+ 
+ int sensehat_get_joystick_state(struct sensehat *sensehat);
+ 
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 4eda339322fb..907d4be0ecd2 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -14,6 +14,8 @@ config MFD_CORE
+ config MFD_SENSEHAT_CORE
+ 	tristate "Raspberry Pi Sense HAT core functions"
+ 	depends on I2C
++	select REGMAP
++	select REGMAP_I2C
+ 	select MFD_CORE
+ 	help
+ 	  This is the core driver for the Raspberry Pi Sense HAT. This provides
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index 834f5463af28..168dd61c4813 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -263,6 +263,7 @@ obj-$(CONFIG_MFD_ROHM_BD71828)	+= rohm-bd71828.o
+ obj-$(CONFIG_MFD_ROHM_BD718XX)	+= rohm-bd718x7.o
+ obj-$(CONFIG_MFD_STMFX) 	+= stmfx.o
+ obj-$(CONFIG_MFD_KHADAS_MCU) 	+= khadas-mcu.o
++obj-$(CONFIG_MFD_SENSEHAT_CORE) += sensehat-core.o
+ obj-$(CONFIG_MFD_ACER_A500_EC)	+= acer-ec-a500.o
+ 
+ obj-$(CONFIG_SGI_MFD_IOC3)	+= ioc3.o
+diff --git a/drivers/mfd/sensehat-core.c b/drivers/mfd/sensehat-core.c
+index 25c805c6a7f3..02b2188ec45e 100644
+--- a/drivers/mfd/sensehat-core.c
++++ b/drivers/mfd/sensehat-core.c
+@@ -21,7 +21,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/regmap.h>
+-#include "sensehat.h"
++#include <linux/mfd/sensehat.h>
+ 
+ static struct platform_device *
+ sensehat_client_dev_register(struct sensehat *sensehat, const char *name);
+-- 
+2.30.2
+

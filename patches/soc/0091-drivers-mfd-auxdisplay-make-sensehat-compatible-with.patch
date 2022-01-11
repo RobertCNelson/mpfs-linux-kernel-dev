@@ -1,0 +1,88 @@
+From cde50a5c95f09e07583477a7a490f0eda5eb10ea Mon Sep 17 00:00:00 2001
+From: shravan kumar <shravan.201@gmail.com>
+Date: Thu, 16 Dec 2021 13:01:24 +0530
+Subject: [PATCH 91/93] drivers: mfd,auxdisplay: make sensehat compatible with
+ example
+
+python sense hat python examples are not working with new rpi drivers,
+change array type to fix it
+
+Signed-off-by: shravan kumar <shravan.201@gmail.com>
+---
+ drivers/auxdisplay/sensehat-display.c | 20 ++++++++++++++++++++
+ include/linux/mfd/sensehat.h          |  9 +++++++++
+ 2 files changed, 29 insertions(+)
+
+diff --git a/drivers/auxdisplay/sensehat-display.c b/drivers/auxdisplay/sensehat-display.c
+index f51189d07d5d..c15ae0352595 100644
+--- a/drivers/auxdisplay/sensehat-display.c
++++ b/drivers/auxdisplay/sensehat-display.c
+@@ -211,6 +211,25 @@ int sensehat_update_display(struct sensehat *sensehat)
+ {
+ 	int i, j, ret;
+ 	struct sensehat_display *display = &sensehat->display;
++#if OLD_DRIVER
++	u16 *mem = (u16 *) display->vmem;
++	u8 *gamma = display->gamma;
++	sensehat_fb_t vmem_work;
++
++	for (j = 0; j < 8; j++) {
++		for (i = 0; i < 8; i++) {
++			vmem_work[(j * 24) + i ] =
++				gamma[(mem[(j * 8) + i] >> 11) & 0x1F];
++			vmem_work[(j * 24) + (i + 8) ] =
++				gamma[(mem[(j * 8) + i] >> 6) & 0x1F];
++			vmem_work[(j * 24) + (i + 16) ] =
++				gamma[(mem[(j * 8) + i]) & 0x1F];
++		}
++	}
++	ret = regmap_bulk_write(sensehat->regmap, SENSEHAT_DISPLAY,
++				vmem_work, sizeof(vmem_work));
++
++#else
+ 	sensehat_fb_t pixel_data;
+ 
+ 	for (i = 0; i < 8; ++i) {
+@@ -223,6 +242,7 @@ int sensehat_update_display(struct sensehat *sensehat)
+ 
+ 	ret = regmap_bulk_write(sensehat->regmap, SENSEHAT_DISPLAY,
+ 				pixel_data, sizeof(pixel_data));
++#endif
+ 	if (ret < 0)
+ 		dev_err(sensehat->dev, "Update to 8x8 LED matrix display failed");
+ 	return ret;
+diff --git a/include/linux/mfd/sensehat.h b/include/linux/mfd/sensehat.h
+index 7e2e97a43f90..fe6300348b59 100644
+--- a/include/linux/mfd/sensehat.h
++++ b/include/linux/mfd/sensehat.h
+@@ -14,8 +14,13 @@
+ #define __LINUX_MFD_SENSEHAT_H_
+ #include <linux/miscdevice.h>
+ 
++#define OLD_DRIVER 1
+ //8x8 display with 3 color channels
++#if OLD_DRIVER
++typedef u8 sensehat_fb_t[192];
++#else
+ typedef u8 sensehat_fb_t[8][3][8];
++#endif
+ 
+ #define SENSEHAT_DISPLAY		0x00
+ #define SENSEHAT_WAI			0xF0
+@@ -49,9 +54,13 @@ struct sensehat {
+ 		struct miscdevice mdev;
+ 		struct mutex rw_mtx;
+ 		u8 gamma[32];
++#if OLD_DRIVER
++		u8 vmem[128];
++#else
+ 		struct {
+ 			u16 b:5, u:1, g:5, r:5;
+ 		} vmem[8][8];
++#endif
+ 	} display;
+ };
+ 
+-- 
+2.30.2
+

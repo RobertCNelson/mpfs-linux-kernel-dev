@@ -1,0 +1,43 @@
+From 4a0948505adc13989e765a4c7929e60354893ffd Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Wed, 12 May 2021 15:47:04 +0100
+Subject: [PATCH 18/93] riscv: icicle kit: add real time clock support
+
+---
+ arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi | 10 ++++++++++
+ arch/riscv/configs/icicle_kit_defconfig           |  1 +
+ 2 files changed, 11 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index f1def604ddf0..526b71ad0f50 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -347,5 +347,15 @@ hwrandom: hwrandom {
+ 			syscontroller = <&syscontroller>;
+ 		};
+ 
++		rtc: rtc@20124000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "microchip,mpfs-rtc";
++			reg = <0x0 0x20124000 0x0 0x1000>;
++			interrupt-parent = <&plic>;
++			interrupts = <80 81>;
++			clocks = <&clkcfg 21>;
++			clock-names = "rtc";
++		};
+ 	};
+ };
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index aadd43bc7f70..433389f066b5 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -147,3 +147,4 @@ CONFIG_HW_RANDOM=y
+ CONFIG_POLARFIRE_SOC_MAILBOX=y
+ CONFIG_POLARFIRE_SOC_SYS_CTRL=y
+ CONFIG_HW_RANDOM_POLARFIRE_SOC=y
++CONFIG_RTC_DRV_MPFS=y
+\ No newline at end of file
+-- 
+2.30.2
+

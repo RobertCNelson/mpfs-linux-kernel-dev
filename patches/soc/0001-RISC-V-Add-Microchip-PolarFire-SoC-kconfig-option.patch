@@ -1,0 +1,36 @@
+From 91ce842182d345985bff4e10c8350bea058e0f57 Mon Sep 17 00:00:00 2001
+From: Atish Patra <atish.patra@wdc.com>
+Date: Wed, 3 Mar 2021 12:02:49 -0800
+Subject: [PATCH 01/93] RISC-V: Add Microchip PolarFire SoC kconfig option
+
+Add Microchip PolarFire kconfig option which selects SoC specific
+and common drivers that is required for this SoC.
+
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
+Reviewed-by: Bin Meng <bin.meng@windriver.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
+---
+ arch/riscv/Kconfig.socs | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index e1b2690b6e45..0f1a132b0b52 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -1,5 +1,12 @@
+ menu "SoC selection"
+ 
++config SOC_MICROCHIP_POLARFIRE
++	bool "Microchip PolarFire SoCs"
++	select MCHP_CLK_MPFS
++	select SIFIVE_PLIC
++	help
++	  This enables support for Microchip PolarFire SoC platforms.
++
+ config SOC_SIFIVE
+ 	bool "SiFive SoCs"
+ 	select SERIAL_SIFIVE if TTY
+-- 
+2.30.2
+

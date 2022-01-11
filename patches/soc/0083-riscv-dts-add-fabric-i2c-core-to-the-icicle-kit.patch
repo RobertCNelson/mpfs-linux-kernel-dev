@@ -1,0 +1,66 @@
+From 28a63363614413aca89d8d284c4f33b593d0cb5d Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Fri, 3 Dec 2021 11:51:01 +0000
+Subject: [PATCH 83/93] riscv: dts: add fabric i2c core to the icicle kit
+
+---
+ .../boot/dts/microchip/microchip-mpfs-fabric.dtsi    | 12 ++++++++++++
+ .../microchip-mpfs-icicle-kit-context-a.dts          |  4 ++++
+ .../boot/dts/microchip/microchip-mpfs-icicle-kit.dts |  4 ++++
+ 3 files changed, 20 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-fabric.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs-fabric.dtsi
+index 8b128b83e706..1fc4d8c4c337 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-fabric.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-fabric.dtsi
+@@ -27,5 +27,17 @@ ihc: ihc {
+ 		#mbox-cells = <1>;
+ 		status = "disabled";
+ 	};
++
++	i2c2: i2c@44000000 {
++		compatible = "microchip,core-i2c";
++		reg = <0x0 0x44000000 0x0 0x1000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&clkcfg CLK_FIC3>;
++		interrupt-parent = <&plic>;
++		interrupts = <PLIC_INT_FABRIC_F2H_4>;
++		clock-frequency = <100000>;
++		status = "disabled";
++	};
+ };
+ 
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
+index 7f9a0defa22c..1d8b55610fbb 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
+@@ -198,6 +198,10 @@ ch3: channel3 {
+ 	};
+ };
+ 
++&i2c2 {
++	status = "okay";
++};
++
+ &can0 {
+ 	status = "okay";
+ };
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index 5e62533575fc..75da16bd183b 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -177,6 +177,10 @@ ch3: channel3 {
+ 	};
+ };
+ 
++&i2c2 {
++	status = "okay";
++};
++
+ &can0 {
+ 	status = "okay";
+ };
+-- 
+2.30.2
+

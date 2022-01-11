@@ -1,0 +1,58 @@
+From ce78efd91b0587b89f5572cf85160b90faeca004 Mon Sep 17 00:00:00 2001
+From: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Date: Thu, 28 Oct 2021 14:07:34 +0100
+Subject: [PATCH 76/93] riscv: dts: icicle-kit: add rpmsg support
+
+---
+ .../microchip-mpfs-icicle-kit-context-a.dts   | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
+index bb0ebce14e39..7f9a0defa22c 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit-context-a.dts
+@@ -33,6 +33,14 @@ reserved-memory {
+ 		#size-cells = <2>;
+ 		#address-cells = <2>;
+ 
++		/*
++		* 0xA200_0000 ~ 0xA23F_FFFF is reserved for context B (BM/RTOS)
++		* Shouldn't be used in Linux (context A)
++		*
++		* 0xA240_0000 ~ 0xA240_FFFF is used by context A and context B
++		  RPMsg vrings
++		*/
++
+ 		fabricbuf0: fabricbuf@0 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x0 0xa0000000 0x0 0x2000000>;
+@@ -50,6 +58,12 @@ fabricbuf2: fabricbuf@2 {
+ 			reg = <0x0 0xd8000000 0x0 0x8000000>;
+ 			label = "fabricbuf2-ddr-nc-wcb";
+ 		};
++
++		rpmsg_dma_reserved: rpmsg_dma@0xa2410000 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0xa2410000 0x0 0x40000>;
++			label = "rpmsg-ddr";
++		};
+ 	};
+ 
+ 	udmabuf0 {
+@@ -92,6 +106,13 @@ ddrc_cache_hi: memory@1000000000 {
+ 		clocks = <&clkcfg CLK_DDRC>;
+ 		status = "okay";
+ 	};
++
++	rpmsg: rpmsg {
++		compatible = "microchip,miv-rpmsg";
++		reg =  <0x0 0xa2400000 0x0 0x10000>; // 64Kb reserved for vrings
++		memory-region = <&rpmsg_dma_reserved>;
++		mboxes= <&ihc 0>;
++	};
+ };
+ 
+ &mmuart1 {
+-- 
+2.30.2
+

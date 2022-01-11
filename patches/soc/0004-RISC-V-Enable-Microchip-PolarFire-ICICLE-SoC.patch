@@ -1,0 +1,41 @@
+From 14420f0194edd0c3e5399614e46098db396250d4 Mon Sep 17 00:00:00 2001
+From: Atish Patra <atish.patra@wdc.com>
+Date: Wed, 3 Mar 2021 12:02:52 -0800
+Subject: [PATCH 04/93] RISC-V: Enable Microchip PolarFire ICICLE SoC
+
+Enable Microchip PolarFire ICICLE soc config in defconfig.
+It allows the default upstream kernel to boot on PolarFire ICICLE board.
+
+Signed-off-by: Atish Patra <atish.patra@wdc.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Reviewed-by: Bin Meng <bin.meng@windriver.com>
+Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
+---
+ arch/riscv/configs/defconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
+index 6c0625aa96c7..1f2be234b11c 100644
+--- a/arch/riscv/configs/defconfig
++++ b/arch/riscv/configs/defconfig
+@@ -16,6 +16,7 @@ CONFIG_EXPERT=y
+ CONFIG_BPF_SYSCALL=y
+ CONFIG_SOC_SIFIVE=y
+ CONFIG_SOC_VIRT=y
++CONFIG_SOC_MICROCHIP_POLARFIRE=y
+ CONFIG_SMP=y
+ CONFIG_HOTPLUG_CPU=y
+ CONFIG_JUMP_LABEL=y
+@@ -82,6 +83,9 @@ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_OHCI_HCD_PLATFORM=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_USB_UAS=y
++CONFIG_MMC_SDHCI=y
++CONFIG_MMC_SDHCI_PLTFM=y
++CONFIG_MMC_SDHCI_CADENCE=y
+ CONFIG_MMC=y
+ CONFIG_MMC_SPI=y
+ CONFIG_RTC_CLASS=y
+-- 
+2.30.2
+

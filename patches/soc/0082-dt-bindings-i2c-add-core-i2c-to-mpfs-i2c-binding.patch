@@ -1,0 +1,37 @@
+From 13fcf269e680284a4e46636b1d22daecf69348fd Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Fri, 3 Dec 2021 11:50:17 +0000
+Subject: [PATCH 82/93] dt-bindings: i2c: add core-i2c to mpfs-i2c binding
+
+---
+ Documentation/devicetree/bindings/i2c/microchip,mpfs-i2c.yaml | 1 +
+ drivers/i2c/busses/i2c-microchip.c                            | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/i2c/microchip,mpfs-i2c.yaml b/Documentation/devicetree/bindings/i2c/microchip,mpfs-i2c.yaml
+index bc4ea4498d35..d28bf2bf416f 100644
+--- a/Documentation/devicetree/bindings/i2c/microchip,mpfs-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/microchip,mpfs-i2c.yaml
+@@ -19,6 +19,7 @@ properties:
+   compatible:
+     enum:
+       - microchip,mpfs-i2c # Microchip PolarFire SoC compatible SoCs
++      - microchip,core-i2c # Microchip Fabric based i2c IP core
+ 
+   reg:
+     maxItems: 1
+diff --git a/drivers/i2c/busses/i2c-microchip.c b/drivers/i2c/busses/i2c-microchip.c
+index 02a7867b48d9..1f732f46fd4c 100755
+--- a/drivers/i2c/busses/i2c-microchip.c
++++ b/drivers/i2c/busses/i2c-microchip.c
+@@ -507,6 +507,7 @@ static int mpfs_i2c_remove(struct platform_device *pdev)
+ /* Match table for of_platform binding */
+ static const struct of_device_id mpfs_i2c_of_match[] = {
+ 	{ .compatible = "microchip,mpfs-i2c" },
++	{ .compatible = "microchip,core-i2c" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_i2c_of_match);
+-- 
+2.30.2
+

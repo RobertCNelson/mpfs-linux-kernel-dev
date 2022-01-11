@@ -1,0 +1,48 @@
+From 3cd91c9be5726e1c701d687e0437866a37ee6949 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Wed, 12 May 2021 16:14:16 +0100
+Subject: [PATCH 21/93] riscv: icicle kit: add i2c driver support
+
+---
+ arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi | 12 ++++++++++++
+ arch/riscv/configs/icicle_kit_defconfig           |  3 ++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+index 526b71ad0f50..1a48ade57208 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs.dtsi
+@@ -357,5 +357,17 @@ rtc: rtc@20124000 {
+ 			clocks = <&clkcfg 21>;
+ 			clock-names = "rtc";
+ 		};
++
++		i2c1: i2c@2010b000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "microchip,mpfs-i2c";
++			reg = <0x0 0x2010b000 0x0 0x1000>;
++			interrupt-parent = <&plic>;
++			interrupts = <61>;
++			clock-frequency = <100000>;
++			clocks = <&clkcfg 16>;
++			status = "okay";
++		};
+ 	};
+ };
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index 433389f066b5..16d2410de568 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -147,4 +147,5 @@ CONFIG_HW_RANDOM=y
+ CONFIG_POLARFIRE_SOC_MAILBOX=y
+ CONFIG_POLARFIRE_SOC_SYS_CTRL=y
+ CONFIG_HW_RANDOM_POLARFIRE_SOC=y
+-CONFIG_RTC_DRV_MPFS=y
+\ No newline at end of file
++CONFIG_RTC_DRV_MPFS=y
++CONFIG_I2C_MICROCHIP=y
+\ No newline at end of file
+-- 
+2.30.2
+

@@ -1,0 +1,90 @@
+From 59da8d3d073feb132d623b6a63e6f1bebe0e3157 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Tue, 24 Aug 2021 14:20:22 +0100
+Subject: [PATCH 66/93] soc mpfs: update sys services compat strings
+
+---
+ drivers/soc/microchip/mpfs-device-cert.c    | 3 +++
+ drivers/soc/microchip/mpfs-fpga-digest.c    | 3 +++
+ drivers/soc/microchip/mpfs-serial-number.c  | 3 +++
+ drivers/soc/microchip/mpfs-signature.c      | 3 +++
+ drivers/soc/microchip/mpfs-sys-controller.c | 7 ++++++-
+ 5 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/soc/microchip/mpfs-device-cert.c b/drivers/soc/microchip/mpfs-device-cert.c
+index 2e0b3ac30c9a..37898182ec1a 100644
+--- a/drivers/soc/microchip/mpfs-device-cert.c
++++ b/drivers/soc/microchip/mpfs-device-cert.c
+@@ -123,6 +123,9 @@ static const struct of_device_id mpfs_device_cert_of_match[] = {
+ 	{
+ 		.compatible = "microchip,polarfire-soc-device-cert",
+ 	},
++	{
++		.compatible = "microchip,mpfs-device-cert",
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_device_cert_of_match);
+diff --git a/drivers/soc/microchip/mpfs-fpga-digest.c b/drivers/soc/microchip/mpfs-fpga-digest.c
+index 134e918ebcee..c3eac96f7bcb 100644
+--- a/drivers/soc/microchip/mpfs-fpga-digest.c
++++ b/drivers/soc/microchip/mpfs-fpga-digest.c
+@@ -148,6 +148,9 @@ static const struct of_device_id mpfs_digest_of_match[] = {
+ 	{
+ 		.compatible = "microchip,polarfire-soc-digest",
+ 	},
++	{
++		.compatible = "microchip,mpfs-digest",
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_digest_of_match);
+diff --git a/drivers/soc/microchip/mpfs-serial-number.c b/drivers/soc/microchip/mpfs-serial-number.c
+index 83de911a3548..0eab38b4a8bd 100644
+--- a/drivers/soc/microchip/mpfs-serial-number.c
++++ b/drivers/soc/microchip/mpfs-serial-number.c
+@@ -123,6 +123,9 @@ static const struct of_device_id mpfs_serial_number_of_match[] = {
+ 	{
+ 		.compatible = "microchip,polarfire-soc-serial-number",
+ 	},
++	{
++		.compatible = "microchip,mpfs-serial-number",
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_serial_number_of_match);
+diff --git a/drivers/soc/microchip/mpfs-signature.c b/drivers/soc/microchip/mpfs-signature.c
+index cf51802f6589..7b6bade046c0 100644
+--- a/drivers/soc/microchip/mpfs-signature.c
++++ b/drivers/soc/microchip/mpfs-signature.c
+@@ -156,6 +156,9 @@ static const struct of_device_id mpfs_signature_of_match[] = {
+ 	{
+ 		.compatible = "microchip,polarfire-soc-signature",
+ 	},
++	{
++		.compatible = "microchip,mpfs-signature",
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_signature_of_match);
+diff --git a/drivers/soc/microchip/mpfs-sys-controller.c b/drivers/soc/microchip/mpfs-sys-controller.c
+index 3cfee997fa59..30f1a115a0c2 100644
+--- a/drivers/soc/microchip/mpfs-sys-controller.c
++++ b/drivers/soc/microchip/mpfs-sys-controller.c
+@@ -100,7 +100,12 @@ mpfs_sys_controller_get(struct device_node *mss_node)
+ EXPORT_SYMBOL(mpfs_sys_controller_get);
+ 
+ static const struct of_device_id mpfs_sys_controller_of_match[] = {
+-	{.compatible = "microchip,polarfire-soc-sys-controller", },
++	{
++		.compatible = "microchip,polarfire-soc-sys-controller",
++	},
++	{
++		.compatible = "microchip,mpfs-sys-controller",
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, mpfs_sys_controller_of_match);
+-- 
+2.30.2
+

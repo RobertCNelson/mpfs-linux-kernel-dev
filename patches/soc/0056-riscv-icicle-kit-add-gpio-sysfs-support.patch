@@ -1,0 +1,37 @@
+From 1c66f561658c33f9c9749620536388de0f4d35a5 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Wed, 4 Aug 2021 13:57:26 +0100
+Subject: [PATCH 56/93] riscv: icicle kit: add gpio sysfs support
+
+---
+ arch/riscv/configs/icicle_kit_amp_defconfig | 1 +
+ arch/riscv/configs/icicle_kit_defconfig     | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/arch/riscv/configs/icicle_kit_amp_defconfig b/arch/riscv/configs/icicle_kit_amp_defconfig
+index afb8025cea1b..387fcdf89c9f 100644
+--- a/arch/riscv/configs/icicle_kit_amp_defconfig
++++ b/arch/riscv/configs/icicle_kit_amp_defconfig
+@@ -83,6 +83,7 @@ CONFIG_SPI_MICROSEMI_QSPI=y
+ CONFIG_SPI_MASTER=y
+ CONFIG_GPIOLIB=y
+ CONFIG_GPIOLIB_IRQCHIP=y
++CONFIG_GPIO_SYSFS=y
+ CONFIG_OF_GPIO=y
+ CONFIG_GPIO_MPFS=y
+ CONFIG_GPIO_MICROSEMI=y
+diff --git a/arch/riscv/configs/icicle_kit_defconfig b/arch/riscv/configs/icicle_kit_defconfig
+index d6d683aff397..5d4cbec122f1 100644
+--- a/arch/riscv/configs/icicle_kit_defconfig
++++ b/arch/riscv/configs/icicle_kit_defconfig
+@@ -83,6 +83,7 @@ CONFIG_SPI_MICROSEMI_QSPI=y
+ CONFIG_SPI_MASTER=y
+ CONFIG_GPIOLIB=y
+ CONFIG_GPIOLIB_IRQCHIP=y
++CONFIG_GPIO_SYSFS=y
+ CONFIG_OF_GPIO=y
+ CONFIG_GPIO_MPFS=y
+ CONFIG_GPIO_MICROSEMI=y
+-- 
+2.30.2
+

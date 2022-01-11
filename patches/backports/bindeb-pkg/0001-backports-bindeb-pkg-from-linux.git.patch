@@ -1,0 +1,33 @@
+From 186119711d569f1ba34d95cd96c59099ef8081b7 Mon Sep 17 00:00:00 2001
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Mon, 10 Jan 2022 18:38:52 -0600
+Subject: [PATCH] backports: bindeb-pkg: from: linux.git
+
+Reference: v5.15.13
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+---
+ scripts/package/buildtar | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/scripts/package/buildtar b/scripts/package/buildtar
+index 936198a90477..221aa7df008d 100755
+--- a/scripts/package/buildtar
++++ b/scripts/package/buildtar
+@@ -125,6 +125,14 @@ case "${ARCH}" in
+ 			fi
+ 		done
+ 		;;
++	riscv)
++		for i in Image.bz2 Image.gz Image; do
++			if [ -f "${objtree}/arch/riscv/boot/${i}" ] ; then
++				cp -v -- "${objtree}/arch/riscv/boot/${i}" "${tmpdir}/boot/vmlinux-${KERNELRELEASE}"
++				break
++			fi
++		done
++		;;
+ 	*)
+ 		[ -f "${KBUILD_IMAGE}" ] && cp -v -- "${KBUILD_IMAGE}" "${tmpdir}/boot/vmlinux-kbuild-${KERNELRELEASE}"
+ 		echo "" >&2
+-- 
+2.30.2
+

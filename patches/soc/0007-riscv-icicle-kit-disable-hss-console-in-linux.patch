@@ -1,0 +1,25 @@
+From 05e75fbf8870b668161d8a1f16d8f13d1976a584 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Thu, 6 May 2021 12:36:28 +0100
+Subject: [PATCH 07/93] riscv: icicle kit: disable hss console in linux
+
+---
+ arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+index ec79944065c9..7786f2bd8e29 100644
+--- a/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
++++ b/arch/riscv/boot/dts/microchip/microchip-mpfs-icicle-kit.dts
+@@ -33,7 +33,7 @@ soc {
+ };
+ 
+ &serial0 {
+-	status = "okay";
++	status = "disabled"; /* Reserved for the HSS */
+ };
+ 
+ &serial1 {
+-- 
+2.30.2
+

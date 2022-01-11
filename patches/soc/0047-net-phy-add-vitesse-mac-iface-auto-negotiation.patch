@@ -1,0 +1,31 @@
+From 856dea5182f3c73090b22dd9603176c1b999451c Mon Sep 17 00:00:00 2001
+From: Lewis Hanly <lewis.hanly@microchip.com>
+Date: Wed, 21 Jul 2021 06:53:52 +0100
+Subject: [PATCH 47/93] net: phy: add vitesse mac iface auto-negotiation
+
+Signed-off-by: Lewis Hanly <lewis.hanly@microchip.com>
+---
+ drivers/net/phy/vitesse.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
+index 16704e243162..c71193f02acc 100644
+--- a/drivers/net/phy/vitesse.c
++++ b/drivers/net/phy/vitesse.c
+@@ -104,6 +104,13 @@ static int vsc824x_add_skew(struct phy_device *phydev)
+ static int vsc824x_config_init(struct phy_device *phydev)
+ {
+ 	int err;
++        unsigned int val;
++
++        /* Enable MAC interface auto-negotiation */
++        phy_write(phydev, 0x1f, 0);
++        val = phy_read(phydev, 0x17);
++        val |= ((1 << 13) | 0x880);
++        phy_write(phydev, 0x17, val);
+ 
+ 	err = phy_write(phydev, MII_VSC8244_AUX_CONSTAT,
+ 			MII_VSC8244_AUXCONSTAT_INIT);
+-- 
+2.30.2
+
